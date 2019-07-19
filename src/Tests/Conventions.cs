@@ -5,7 +5,7 @@
         string PingIt();
     }
 
-    internal class Ping : IPing
+    class Ping : IPing
     {
         public string PingIt()
         {
