@@ -8,9 +8,20 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Balto
 {
+    /// <summary>
+    /// Extensions to scan for default implementations of interfaces and registers them and install by installers.
+    /// - Can scan for all default implementations of interfaces and registers them as <see cref="ServiceLifetime.Singleton"/> or what you specify
+    /// - Installs all dependencies configured via <see cref="IInstaller"/>
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
-        public static void Install(this IServiceCollection serviceCollection, Action<InstallationConfiguration> options)
+        /// <summary>
+        /// Registers dependencies via installers and/or default conventions
+        /// </summary>
+        /// <param name="serviceCollection">Service collection</param>
+        /// <param name="options">Configuration for what to install in the Service collection</param>        
+        /// <returns>Service collection</returns>
+        public static IServiceCollection Install(this IServiceCollection serviceCollection, Action<InstallationConfiguration> options)
         {
             if (serviceCollection == null) throw new ArgumentNullException(nameof(serviceCollection));
             if (options == null) throw new ArgumentNullException(nameof(options));
@@ -22,6 +33,8 @@ namespace Balto
 
             if (config.Conventions != null)
                 serviceCollection.AddByConvention(config.Conventions);
+
+            return serviceCollection;
         }
 
         private static void AddByConvention(this IServiceCollection serviceCollection, Action<ByConventionConfiguration> options)
