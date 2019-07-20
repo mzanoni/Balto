@@ -16,7 +16,7 @@ Balto can scan assemblies and adds default implementations of interfaces to the 
 A default implementation is a class with the same name as the interface (minus the I) that lives in the exact same namespace and assembly as the interface.
 You can add from multiple assemblies and you can freely control the lifestyle. Use with an `IServiceCollection` instance:
 
-```
+```csharp
 services.Install(install => install
                 .InstallByConvention(c => c
                     .AddFromAssemblyOfThis<Startup>()));
@@ -24,7 +24,7 @@ services.Install(install => install
 
 This will register the following in the ServiceCollection:
 
-```
+```csharp
 public interface IPing
 {
 	string PingIt();
@@ -42,7 +42,7 @@ class Ping : IPing
 
 Balto also support simple installers to keep the `Startup`-class light. Use with an `IServiceCollection` instance:
 
-```
+```csharp
 services.Install(install => install
                 .AddInstallers(new Installer()));
 ```
