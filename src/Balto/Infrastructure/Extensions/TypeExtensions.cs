@@ -2,7 +2,7 @@
 
 namespace Balto.Infrastructure.Extensions
 {
-    internal static class StringExtensions
+    internal static class TypeExtensions
     {
         internal static bool IsInExactNamespace(this Type type, Type compareToType)
         {

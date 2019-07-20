@@ -4,20 +4,19 @@ using Xunit;
 
 namespace Tests
 {
-    public class DuplicateRegistrationTests
+    public class IgnoreTests
     {
         [Fact]
-        public void ShouldOnlyAddIPingOnce()
+        public void ShouldIgnoreIPing()
         {
             var services = new ServiceCollection();
 
-            services.AddTransient<IPing, Ping>();
-
             services.Install(install => install
                 .InstallByConvention(x => x
-                    .AddFromAssemblyOfThis<AddByConventionsTests>()));
+                    .AddFromAssemblyOfThis<AddByConventionsTests>()
+                    .Ignore<IPing>()));
 
-            Assert.Single(services);
+            Assert.Empty(services);
         }
     }
 }
