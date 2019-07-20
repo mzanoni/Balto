@@ -47,17 +47,17 @@ namespace Balto
 
             foreach (Assembly assembly in config.Assemblies.Distinct())
             {
-                serviceCollection.AddByConvention(assembly, config.Lifetime);
+                serviceCollection.AddByConvention(assembly, config);
             }
         }
 
-        private static void AddByConvention(this IServiceCollection serviceCollection, Assembly assembly, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+        private static void AddByConvention(this IServiceCollection serviceCollection, Assembly assembly, ByConventionConfiguration configuration)
         {
             if (serviceCollection == null) throw new ArgumentNullException(nameof(serviceCollection));
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
 
             List<Type> interfaces = assembly.ExportedTypes
-                .Where(x => x.IsInterface && x.IsPublic)
+                .Where(x => x.IsInterface && x.IsPublic && !configuration.IgnoredTypes.Contains(x))
                 .ToList();
             List<Type> classes = assembly.GetTypes()
                 .Where(x => !x.IsInterface && !x.IsAbstract)
@@ -76,7 +76,7 @@ namespace Balto
                 if (implementations.Length == 0) continue;
                 if (implementations.Length > 1) continue;
 
-                serviceCollection.TryAdd(new ServiceDescriptor(@interface, implementations.First(), lifetime));
+                serviceCollection.TryAdd(new ServiceDescriptor(@interface, implementations.First(), configuration.Lifetime));
             }
         }
     }

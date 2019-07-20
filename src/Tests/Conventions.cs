@@ -20,20 +20,12 @@
 
     public interface IZong
     {
-        string Zong();
+        string ZongIt();
     }
 
-    public class Zong1 : IZong
+    public class Fong : IZong
     {
-        public string Zong()
-        {
-            return "test";
-        }
-    }
-
-    public class Zong2 : IZong
-    {
-        public string Zong()
+        public string ZongIt()
         {
             return "test";
         }

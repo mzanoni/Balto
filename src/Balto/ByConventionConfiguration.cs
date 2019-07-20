@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,6 +9,7 @@ namespace Balto
     {
         internal ServiceLifetime Lifetime { get; private set; } = ServiceLifetime.Singleton;
         internal List<Assembly> Assemblies { get; } = new List<Assembly>();
+        internal List<Type> IgnoredTypes { get; } = new List<Type>();
 
         public ByConventionConfiguration AddFromAssemblyOfThis<T>()
         {
@@ -33,6 +35,13 @@ namespace Balto
         public ByConventionConfiguration AsTransient()
         {
             Lifetime = ServiceLifetime.Transient;
+
+            return this;
+        }
+
+        public ByConventionConfiguration Ignore<T>()
+        {
+            IgnoredTypes.Add(typeof(T));
 
             return this;
         }
