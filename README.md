@@ -1,6 +1,6 @@
 # Balto
 
-Convention based assembly scanning and installers for Microsoft.Extensions.DependencyInjection
+Convention based assembly scanning and installers for Microsoft.Extensions.DependencyInjection.
 
 ### Installing Balto
 
@@ -8,7 +8,7 @@ You should install Balto with NuGet:
 
 > Install-Package Balto
 
-Run this command from the NuGet Package Manager Console
+Run this command from the NuGet Package Manager Console to install the NuGet package.
 
 ### Using Balto
 
@@ -22,7 +22,7 @@ services.Install(install => install
                     .AddFromAssemblyOfThis<Startup>()));
 ```
 
-This will register the following in the ServiceCollection:
+This will register the following default convention implementation in the ServiceCollection:
 
 ```csharp
 public interface IPing
