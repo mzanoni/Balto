@@ -4,8 +4,12 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 	
 	<PackageId>Balto</PackageId>
-	<Version>0.0.1</Version>
+	<Version>0.5.0</Version>
 	<Authors>Martin Zanoni</Authors>
+	<Description>Convention based assembly scanning and installers for Microsoft.Extensions.DependencyInjection</Description>
+	<RepositoryUrl>https://github.com/mzanoni/Balto</RepositoryUrl>
+	<Copyright>Copyright © 20189</Copyright>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
