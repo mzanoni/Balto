@@ -10,6 +10,7 @@
 	<RepositoryUrl>https://github.com/mzanoni/Balto</RepositoryUrl>
 	<Copyright>Copyright © 2019</Copyright>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageTags>dependency-injection;DependencyInjection</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
