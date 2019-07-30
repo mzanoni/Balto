@@ -16,6 +16,16 @@ namespace Tests
         }
 
         [Fact]
+        public void Installer_AddedWithNoInstallers_EmptyServiceCollection()
+        {
+            var serviceCollection = new ServiceCollection();
+
+            serviceCollection.Install(install => install.AddInstallers());
+
+            Assert.Empty(serviceCollection);
+        }
+
+        [Fact]
         public void Installer_OnlyIPing()
         {
             var serviceCollection = new ServiceCollection();
@@ -29,7 +39,7 @@ namespace Tests
             Assert.NotNull(ping);
         }
 
-        [Fact]
+       [Fact]
         public void InstallerAndConventions_OnlyOneIPing()
         {
             var serviceCollection = new ServiceCollection();
@@ -46,11 +56,32 @@ namespace Tests
             Assert.NotNull(ping);
         }
 
+        [Fact]
+        public void Installers_BothInstalled()
+        {
+            var serviceCollection = new ServiceCollection();
+
+            serviceCollection.Install(install => install
+                .AddInstallers(
+                    new Installer(),
+                    new SecondInstaller()));
+
+            Assert.InRange(serviceCollection.Count, 2, 2);
+        }
+
         public class Installer : IInstaller
         {
             public void Install(IServiceCollection serviceCollection)
             {
                 serviceCollection.AddTransient<IPing, Ping>();
+            }
+        }
+
+        public class SecondInstaller : IInstaller
+        {
+            public void Install(IServiceCollection serviceCollection)
+            {
+                serviceCollection.AddTransient<IZong, Fong>();
             }
         }
     }

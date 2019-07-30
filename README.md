@@ -45,6 +45,14 @@ Balto also support simple installers to keep the `Startup`-class light. Use with
 ```csharp
 services.Install(install => install
                 .AddInstallers(new Installer()));
+
+public class Installer : IInstaller
+{
+	public void Install(IServiceCollection serviceCollection)
+	{
+		serviceCollection.AddTransient<IPing, Ping>();
+	}
+}				
 ```
 
 You can add as many installers as you like.
