@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Balto.Infrastructure.Extensions;
@@ -29,7 +28,10 @@ namespace Balto
             var config = new InstallationConfiguration();
             options.Invoke(config);
 
-            config.Installers.ForEach(installer => installer.Install(serviceCollection));
+            config.Installers
+                .Distinct()
+                .ToList()
+                .ForEach(installer => installer.Install(serviceCollection));
 
             if (config.Conventions != null)
                 serviceCollection.AddByConvention(config.Conventions);
@@ -56,12 +58,12 @@ namespace Balto
             if (serviceCollection == null) throw new ArgumentNullException(nameof(serviceCollection));
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
 
-            List<Type> interfaces = assembly.ExportedTypes
+            Type[] interfaces = assembly.ExportedTypes
                 .Where(x => x.IsInterface && x.IsPublic && !configuration.IgnoredTypes.Contains(x))
-                .ToList();
-            List<Type> classes = assembly.GetTypes()
+                .ToArray();
+            Type[] classes = assembly.GetTypes()
                 .Where(x => !x.IsInterface && !x.IsAbstract)
-                .ToList();
+                .ToArray();
 
             foreach (Type @interface in interfaces)
             {
