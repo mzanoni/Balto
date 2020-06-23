@@ -62,7 +62,7 @@ namespace Balto
                 .Where(x => x.IsInterface && x.IsPublic && !configuration.IgnoredTypes.Contains(x))
                 .ToArray();
             Type[] classes = assembly.GetTypes()
-                .Where(x => !x.IsInterface && !x.IsAbstract)
+                .Where(x => !x.IsInterface && !x.IsAbstract && !configuration.IgnoredTypes.Contains(x))
                 .ToArray();
 
             foreach (Type @interface in interfaces)
