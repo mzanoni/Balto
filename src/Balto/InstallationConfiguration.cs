@@ -6,7 +6,8 @@ namespace Balto
     public class InstallationConfiguration
     {
         internal List<IInstaller> Installers { get; } = new List<IInstaller>();
-        internal Action<ByConventionConfiguration> Conventions { get; set; }
+        
+        internal Action<ByConventionConfiguration>? Conventions { get; set; }
 
         public InstallationConfiguration AddInstallers(params IInstaller[] installers)
         {
