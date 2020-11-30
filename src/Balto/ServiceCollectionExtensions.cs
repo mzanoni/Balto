@@ -57,6 +57,7 @@ namespace Balto
         {
             if (serviceCollection == null) throw new ArgumentNullException(nameof(serviceCollection));
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+            if (configuration == null) throw new ArgumentNullException(nameof(configuration));
 
             Type[] interfaces = assembly.ExportedTypes
                 .Where(x => x.IsInterface && x.IsPublic && !configuration.IgnoredTypes.Contains(x))

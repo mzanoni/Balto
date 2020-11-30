@@ -7,13 +7,13 @@ namespace Tests
 {
     public class InstallersTests
     {
-        //[Fact]
-        //public void NullInstaller_Exception()
-        //{
-        //    var serviceCollection = new ServiceCollection();
+        [Fact]
+        public void NullInstaller_Exception()
+        {
+            var serviceCollection = new ServiceCollection();
 
-        //    Assert.Throws<ArgumentNullException>(() => serviceCollection.Install(null));
-        //}
+            Assert.Throws<ArgumentNullException>(() => serviceCollection.Install(null));
+        }
 
         [Fact]
         public void Installer_AddedWithNoInstallers_EmptyServiceCollection()
