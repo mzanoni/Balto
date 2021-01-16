@@ -14,7 +14,7 @@ Run this command from the NuGet Package Manager Console to install the NuGet pac
 
 Balto can scan assemblies and adds default implementations of interfaces to the container. 
 A default implementation is a class with the same name as the interface (minus the I) that lives in the exact same namespace and assembly as the interface.
-You can add from multiple assemblies and you can freely control the lifestyle. Use with an `IServiceCollection` instance:
+You can add from multiple assemblies and you can freely control the lifestyle - the default lifestyle is `Singleton`. Use with an `IServiceCollection` instance:
 
 ```csharp
 services.Install(install => install
