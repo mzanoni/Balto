@@ -12,7 +12,7 @@ namespace Balto
     /// - Can scan for all default implementations of interfaces and registers them as <see cref="ServiceLifetime.Singleton"/> or what you specify
     /// - Installs all dependencies configured via <see cref="IInstaller"/>
     /// </summary>
-    public static class ServiceCollectionExtensions
+    public static class InstallerExtensions
     {
         /// <summary>
         /// Registers dependencies via installers and/or default conventions
