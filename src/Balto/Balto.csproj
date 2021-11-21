@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>10</LangVersion>
 	  <PackageId>Balto</PackageId>
-	  <Version>5.0.0</Version>
+	  <Version>6.0.0</Version>
 	  <Authors>Martin Zanoni</Authors>
 	  <Description>Convention based assembly scanning and installers for Microsoft.Extensions.DependencyInjection</Description>
 	  <RepositoryUrl>https://github.com/mzanoni/Balto</RepositoryUrl>
