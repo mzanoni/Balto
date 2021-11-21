@@ -7,7 +7,7 @@ namespace Balto
 {
     public class ByConventionConfiguration
     {
-        internal ServiceLifetime Lifetime { get; private set; } = ServiceLifetime.Transient;
+        internal ServiceLifetime Lifetime { get; private set; } = ServiceLifetime.Scoped;
         internal List<Assembly> Assemblies { get; } = new();
         internal List<Type> IgnoredTypes { get; } = new();
 
