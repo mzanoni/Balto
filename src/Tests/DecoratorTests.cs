@@ -13,9 +13,12 @@ namespace Tests
         {
             var services = new ServiceCollection();
             
-            services.AddSingleton<IDecorator, StandardDecorator>();
-            services.AddDecorator<IDecorator, WrapperDecorator>();
-            services.AddDecorator<IDecorator, MegaWrapperDecorator>();
+            services.AddSingleton<IDecorator, DecoratedClass>();
+            services.AddDecorator<IDecorator, InnerDecorator>();
+            services.AddDecorator<IDecorator, OuterDecorator>();
+
+            services.AddSingleton<IScopedDecorator, ScopeDecoratedClass>();
+            services.AddDecorator<IScopedDecorator, ScopedDecorator>(ServiceLifetime.Scoped);
 
             _provider = services.BuildServiceProvider();
         }
@@ -26,7 +29,29 @@ namespace Tests
             IDecorator decorator = _provider.GetService<IDecorator>();
 
             Assert.NotNull(decorator);
-            Assert.Equal("Mega Wrapped Dummy", decorator.DecoratedResult);
+            Assert.Equal("Outer Inner Dummy", decorator.DecoratedResult);
+        }
+
+        [Fact]
+        public void ShouldReturnInstance_ResultsShouldBeWrappedAndDifferent()
+        {
+            string result1;
+            string result2;
+
+            using (_provider.CreateScope())
+            {
+                IScopedDecorator decorator = _provider.GetRequiredService<IScopedDecorator>();
+                result1 = decorator.DecoratedResult;
+            }
+
+            using (_provider.CreateScope())
+            {
+                IScopedDecorator decorator = _provider.GetRequiredService<IScopedDecorator>();
+                result2 = decorator.DecoratedResult;
+
+            }
+
+            Assert.NotEqual(result1, result2);
         }
 
         public interface IDecorator
@@ -34,31 +59,54 @@ namespace Tests
             public string DecoratedResult { get; }
         }
 
-        public class WrapperDecorator : IDecorator
+        public class InnerDecorator : IDecorator
         {
             private readonly IDecorator _decoratedInstance;
 
-            public WrapperDecorator(IDecorator decoratedInstance)
+            public InnerDecorator(IDecorator decoratedInstance)
             {
                 _decoratedInstance = decoratedInstance;
             }
 
-            public string DecoratedResult => "Wrapped " + _decoratedInstance.DecoratedResult;
+            public string DecoratedResult => "Inner " + _decoratedInstance.DecoratedResult;
         }
 
-        public class MegaWrapperDecorator : IDecorator
+        public class OuterDecorator : IDecorator
         {
             private readonly IDecorator _decoratedInstance;
 
-            public MegaWrapperDecorator(IDecorator decoratedInstance)
+            public OuterDecorator(IDecorator decoratedInstance)
             {
                 _decoratedInstance = decoratedInstance;
             }
 
-            public string DecoratedResult => "Mega " + _decoratedInstance.DecoratedResult;
+            public string DecoratedResult => "Outer " + _decoratedInstance.DecoratedResult;
         }
 
-        public class StandardDecorator : IDecorator
+        public class DecoratedClass : IDecorator
+        {
+            public string DecoratedResult => "Dummy";
+        }
+
+
+        public interface IScopedDecorator
+        {
+            public string DecoratedResult { get; }
+        }
+
+        public class ScopedDecorator : IScopedDecorator
+        {
+            private readonly IScopedDecorator _decoratedInstance;
+
+            public ScopedDecorator(IScopedDecorator decoratedInstance)
+            {
+                _decoratedInstance = decoratedInstance;
+            }
+
+            public string DecoratedResult => $"{Guid.NewGuid()} " + _decoratedInstance.DecoratedResult;
+        }
+
+        public class ScopeDecoratedClass : IScopedDecorator
         {
             public string DecoratedResult => "Dummy";
         }
