@@ -73,8 +73,7 @@ namespace Balto
             if (decoratedServiceFactory is null && previousRegistration.ImplementationInstance != null)
                 decoratedServiceFactory = _ => previousRegistration.ImplementationInstance;
             if (decoratedServiceFactory is null && previousRegistration.ImplementationType != null)
-                decoratedServiceFactory = serviceProvider => ActivatorUtilities.CreateInstance(
-                    serviceProvider, previousRegistration.ImplementationType, Array.Empty<object>());
+                decoratedServiceFactory = serviceProvider => ActivatorUtilities.CreateInstance(serviceProvider, previousRegistration.ImplementationType, Array.Empty<object>());
 
             if (decoratedServiceFactory is null) // Should not be null here, but we are checking to be sure
                 throw new Exception($"Tried to register a decorator for type {typeof(TService).Name}, but the registration being wrapped specified no implementation at all.");

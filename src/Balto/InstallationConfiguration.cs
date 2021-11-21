@@ -1,12 +1,11 @@
-﻿#nullable enable
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Balto
 {
     public class InstallationConfiguration
     {
-        internal List<IInstaller> Installers { get; } = new List<IInstaller>();
+        internal List<IInstaller> Installers { get; } = new();
         
         internal Action<ByConventionConfiguration>? Conventions { get; private set; }
 

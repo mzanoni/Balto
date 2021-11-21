@@ -69,17 +69,22 @@ namespace Balto
             foreach (Type @interface in interfaces)
             {
                 Type[] implementations = classes
-                    .Where(@class =>
-                        @interface.IsAssignableFrom(@class) &&
-                        @interface.Assembly.Equals(@class.Assembly) &&
-                        @interface.IsInExactNamespace(@class) &&
-                        @interface.Name.Equals($"I{@class.Name}"))
+                    .Where(IsConventionImplementation(@interface))
                     .ToArray();
 
                 if (implementations.Length == 0) continue;
                 if (implementations.Length > 1) continue;
 
                 serviceCollection.TryAdd(new ServiceDescriptor(@interface, implementations.First(), configuration.Lifetime));
+            }
+
+            static Func<Type, bool> IsConventionImplementation(Type @interface)
+            {
+                return @class =>
+                    @interface.IsAssignableFrom(@class) &&
+                    @interface.Assembly.Equals(@class.Assembly) &&
+                    @interface.IsInExactNamespace(@class) &&
+                    @interface.Name.Equals($"I{@class.Name}");
             }
         }
     }

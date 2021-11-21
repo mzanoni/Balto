@@ -12,7 +12,7 @@ namespace Tests
         {
             var serviceCollection = new ServiceCollection();
 
-            Assert.Throws<ArgumentNullException>(() => serviceCollection.Install(null));
+            Assert.Throws<ArgumentNullException>(() => serviceCollection.Install(null!));
         }
 
         [Fact]
