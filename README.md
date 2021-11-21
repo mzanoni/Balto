@@ -14,7 +14,7 @@ Run this command from the NuGet Package Manager Console to install the NuGet pac
 
 Balto can scan assemblies and adds default implementations of interfaces to the container. 
 A default implementation is a class with the same name as the interface (minus the I) that lives in the exact same namespace and assembly as the interface.
-You can add from multiple assemblies and you can freely control the lifestyle - the default lifestyle is `Singleton`. Use with an `IServiceCollection` instance:
+You can add from multiple assemblies and you can freely control the lifestyle - the default lifestyle is `Scoped`. Use with an `IServiceCollection` instance:
 
 ```csharp
 services.Install(install => install
@@ -39,6 +39,39 @@ class Ping : IPing
 }
 ```
 
+Balto supports decorators
+
+```csharp
+public interface IPing
+{
+	string PingIt();
+}
+
+class Ping : IPing
+{
+	public string PingIt()
+	{
+		return "Ping!";
+	}
+}
+
+class DecoratorPing : IPing
+{
+	private readonly IPing _ping;
+
+	public DecoratorPing(IPing ping) {
+		_ping = ping;
+	}
+
+	public string PingIt()
+	{
+		return "Ping " + _ping.PingIt();
+	}
+}
+
+services.AddSingleton<IPing, Ping>();
+services.AddDecorator<IPing, DecoratorPing>();
+```
 
 Balto also support simple installers to keep the `Startup`-class light. Use with an `IServiceCollection` instance:
 
