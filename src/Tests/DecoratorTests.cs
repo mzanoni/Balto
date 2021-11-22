@@ -38,17 +38,19 @@ namespace Tests
             string result1;
             string result2;
 
-            using (_provider.CreateScope())
+            using (var scope = _provider.CreateScope())
             {
-                IScopedDecorator decorator = _provider.GetRequiredService<IScopedDecorator>();
+                IScopedDecorator decorator = scope.ServiceProvider.GetRequiredService<IScopedDecorator>();
                 result1 = decorator.DecoratedResult;
+                string result1Again = decorator.DecoratedResult;
+
+                Assert.Equal(result1, result1Again);
             }
 
-            using (_provider.CreateScope())
+            using (var scope = _provider.CreateScope())
             {
-                IScopedDecorator decorator = _provider.GetRequiredService<IScopedDecorator>();
+                IScopedDecorator decorator = scope.ServiceProvider.GetRequiredService<IScopedDecorator>();
                 result2 = decorator.DecoratedResult;
-
             }
 
             Assert.NotEqual(result1, result2);
@@ -97,13 +99,14 @@ namespace Tests
         public class ScopedDecorator : IScopedDecorator
         {
             private readonly IScopedDecorator _decoratedInstance;
+            private readonly Guid _key = Guid.NewGuid();
 
             public ScopedDecorator(IScopedDecorator decoratedInstance)
             {
                 _decoratedInstance = decoratedInstance;
             }
 
-            public string DecoratedResult => $"{Guid.NewGuid()} " + _decoratedInstance.DecoratedResult;
+            public string DecoratedResult => $"{_key} " + _decoratedInstance.DecoratedResult;
         }
 
         public class ScopeDecoratedClass : IScopedDecorator
